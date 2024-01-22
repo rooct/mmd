@@ -231,10 +231,6 @@
 
         <Editor />
       </Card>
-
-      <!-- <div class="">
-        <Actions />
-      </div> -->
     </div>
     <div id="resizeHandler" class="hidden md:block" />
     {#if isView}
@@ -244,9 +240,6 @@
             <View />
           </div>
         </Card>
-        <div class="mx-2 rounded p-2 shadow md:hidden">
-          Code editing not supported on mobile. Please use a desktop browser.
-        </div>
       </div>
     {/if}
   </div>
