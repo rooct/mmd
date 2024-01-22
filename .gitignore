@@ -7,8 +7,7 @@ yarn-error.log
 .DS_Store
 /.svelte-kit
 /build
-/docs
-docs/
+docs2/
 /functions
 /snapshots.js
 /cypress/downloads

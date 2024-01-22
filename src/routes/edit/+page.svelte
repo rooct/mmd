@@ -157,8 +157,8 @@
                 target="_blank"
                 rel="noreferrer"
                 class="flex-grow"
-                href={`https://mermaid.ink/img/${$stateStore.serialized}?type=png`}>
-                PNG
+                href={`https://mermaid.ink/img/${$stateStore.serialized}?type=jpeg`}>
+                JPEG
               </a>
             </button>
             <button
@@ -203,8 +203,8 @@
                   target="_blank"
                   rel="noreferrer"
                   class="flex-grow"
-                  href={`https://mermaid.ink/img/${$stateStore.serialized}?type=png`}>
-                  PNG
+                  href={`https://mermaid.ink/img/${$stateStore.serialized}?type=jpeg`}>
+                  JPEG
                 </a>
               </button>
               <button
