@@ -8,6 +8,7 @@ yarn-error.log
 /.svelte-kit
 /build
 /docs
+docs/
 /functions
 /snapshots.js
 /cypress/downloads
