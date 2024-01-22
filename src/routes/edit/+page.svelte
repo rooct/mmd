@@ -14,6 +14,7 @@
   import type { Tab, DocumentationConfig, EditorMode, ValidatedState } from '$lib/types';
   import { deserializeState } from '$lib/util/serde';
   import Theme from '$lib/components/Theme.svelte';
+  import View from '$lib/components/View.svelte';
 
   const MCBaseURL = dev ? 'http://localhost:5174' : 'https://mermaidchart.com';
   const docURLBase = 'https://mermaid-js.github.io/mermaid';
@@ -59,6 +60,7 @@
   let docURL = docURLBase;
   let activeTabID = 'code';
   let docKey = '';
+  let isView = false;
   stateStore.subscribe(({ code, editorMode }: ValidatedState) => {
     activeTabID = editorMode;
     const codeTypeMatch = /(\S+)\s/.exec(code);
@@ -111,16 +113,16 @@
       window.addEventListener('mouseup', stopResize);
     });
   });
-  const testsdd = () => {
-    console.log('de--', deserializeState($stateStore.serialized));
+  const setView = () => {
+    isView = !isView;
   };
 </script>
 
 <div class="flex h-full flex-col overflow-hidden">
   <div class="flex flex-1 overflow-hidden">
-    <div class="flex flex-col" id="editorPane" style="width: 100%">
+    <div class="flex flex-col" id="editorPane" style="width: {isView ? '50%' : '100%'}">
       <Card on:select={tabSelectHandler} {tabs} isCloseable={false} {activeTabID} title="">
-        <div slot="actions" class="flex flex-row items-center">
+        <div slot="actions" class="flex items-center">
           <!-- <div class="form-control flex-row items-center">
             <label class="label cursor-pointer" for="autoSync">
               <span>sync</span>
@@ -140,44 +142,91 @@
               on:click={syncDiagram}><i class="fas fa-sync" /></button>
           {/if} -->
           <Theme />
-          <button
-            class="btn btn-secondary btn-xs"
-            title="View documentation for {docKey.replace('Diagram', '')} diagram">
-            <a target="_blank" href="https://mermaid.js.org/intro/" data-cy="docs">
-              <i class="fas fa-book mr-1" />Docs
-            </a>
-          </button>
-          <a
-            target="_blank"
-            rel="noreferrer"
-            class="flex-grow"
-            href={`https://mermaid.ink/img/${$stateStore.serialized}?type=png`}>
-            <button class="action-btn w-full">
-              <i class="fas fa-external-link-alt mr-2" /> PNG
+          <div class="  hidden items-center gap-2 md:flex">
+            <button
+              class="btn btn-secondary btn-xs"
+              title="View documentation for {docKey.replace('Diagram', '')} diagram">
+              <a target="_blank" href="https://mermaid.js.org/intro/" data-cy="docs">
+                <i class="fas fa-book mr-1" />Docs
+              </a>
             </button>
-          </a>
-          <a
-            target="_blank"
-            rel="noreferrer"
-            class="flex-grow"
-            href={`https://mermaid.ink/svg/${$stateStore.serialized}`}>
-            <button class="action-btn w-full">
-              <i class="fas fa-external-link-alt mr-2" /> SVG
+            <button
+              class="btn btn-secondary btn-xs"
+              title="View documentation for {docKey.replace('Diagram', '')} diagram">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                class="flex-grow"
+                href={`https://mermaid.ink/img/${$stateStore.serialized}?type=png`}>
+                PNG
+              </a>
             </button>
-          </a>
-          <!-- <label class="label cursor-pointer py-0" for="panZoom">
-            <span>缩放</span>
-            <input
-              type="checkbox"
-              class="toggle {$stateStore.panZoom ? 'btn-secondary' : 'toggle-primary'}"
-              id="panZoom"
-              bind:checked={$inputStateStore.panZoom} />
-          </label> -->
-          <a
-            href={`${base}/show#${$stateStore.serialized}`}
-            target="_blank"
-            class="btn btn-secondary btn-xs gap-1"
-            title="View diagram in new page"><i class="fas fa-external-link-alt" />预览</a>
+            <button
+              class="btn btn-secondary btn-xs"
+              title="View documentation for {docKey.replace('Diagram', '')} diagram">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`https://mermaid.ink/svg/${$stateStore.serialized}`}>
+                SVG
+              </a>
+            </button>
+            <a
+              href={`${base}/show#${$stateStore.serialized}`}
+              target="_blank"
+              class="gap btn btn-secondary btn-xs"
+              title="View diagram in new page"><i class="fas fa-share" />预览</a>
+
+            <button class="btn btn-secondary btn-xs" on:click={setView}
+              ><i class="fas fa-stop-circle"></i></button>
+          </div>
+
+          <div class=" dropdown">
+            <button
+              class="btn btn-ghost block md:hidden"
+              title="View documentation for {docKey.replace('Diagram', '')} diagram">
+              <i class="fas fa-ellipsis-h" />
+            </button>
+            <div
+              class=" dropdown-content right-0 top-px mt-12 flex w-32 flex-col gap-2 overflow-y-auto bg-white p-3 text-base-content shadow-2xl">
+              <button
+                class="btn btn-secondary btn-xs"
+                title="View documentation for {docKey.replace('Diagram', '')} diagram">
+                <a target="_blank" href="https://mermaid.js.org/intro/" data-cy="docs">
+                  <i class="fas fa-book mr-1" />Docs
+                </a>
+              </button>
+              <button
+                class="btn btn-secondary btn-xs"
+                title="View documentation for {docKey.replace('Diagram', '')} diagram">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  class="flex-grow"
+                  href={`https://mermaid.ink/img/${$stateStore.serialized}?type=png`}>
+                  PNG
+                </a>
+              </button>
+              <button
+                class="btn btn-secondary btn-xs"
+                title="View documentation for {docKey.replace('Diagram', '')} diagram">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`https://mermaid.ink/svg/${$stateStore.serialized}`}>
+                  SVG
+                </a>
+              </button>
+              <a
+                href={`${base}/show#${$stateStore.serialized}`}
+                target="_blank"
+                class="gap btn btn-secondary btn-xs"
+                title="View diagram in new page"><i class="fas fa-share" />预览</a>
+
+              <button class="btn btn-secondary btn-xs" on:click={setView}
+                ><i class="fas fa-stop-circle"></i></button>
+            </div>
+          </div>
         </div>
 
         <Editor />
@@ -187,17 +236,19 @@
         <Actions />
       </div> -->
     </div>
-    <!-- <div id="resizeHandler" class="hidden md:block" />
-    <div class="flex flex-1 flex-col overflow-hidden">
-      <Card title="Diagram" isCloseable={false}>
-        <div class="flex-1 overflow-auto">
-          <View />
+    <div id="resizeHandler" class="hidden md:block" />
+    {#if isView}
+      <div class="flex flex-1 flex-col overflow-hidden">
+        <Card title="Diagram" isCloseable={false}>
+          <div class="flex-1 overflow-auto">
+            <View />
+          </div>
+        </Card>
+        <div class="mx-2 rounded p-2 shadow md:hidden">
+          Code editing not supported on mobile. Please use a desktop browser.
         </div>
-      </Card>
-      <div class="mx-2 rounded p-2 shadow md:hidden">
-        Code editing not supported on mobile. Please use a desktop browser.
       </div>
-    </div> -->
+    {/if}
   </div>
 </div>
 

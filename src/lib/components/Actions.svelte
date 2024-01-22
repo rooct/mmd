@@ -184,6 +184,12 @@
 
 <Card title="Actions" isOpen={false}>
   <div class="m-1 flex flex-wrap gap-1">
+    <button id="downloadPNG" class="action-btn flex-grow" on:click={onDownloadPNG}>
+      <i class="fas fa-download mr-1" /> PNG
+    </button>
+    <button id="downloadSVG" class="action-btn flex-grow" on:click={onDownloadSVG}>
+      <i class="fas fa-download mr-2" /> SVG
+    </button>
     <a target="_blank" rel="noreferrer" class="flex-grow" href={iUrl}>
       <button class="action-btn w-full">
         <i class="fas fa-external-link-alt mr-2" /> PNG
